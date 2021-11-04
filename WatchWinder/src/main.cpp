@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <EEPROM.h>
-
+#include <WiFiManager.h>
 #define EEPROM_SIZE 230
 
+WiFiManager wifiManager;
 const int M1 = 14; //Stepper Driver Pin 1
 const int M2 = 5; //Stepper Driver Pin 2
 const int M3 = 4; //Stepper Driver Pin 3
@@ -74,6 +75,12 @@ void startWifi(){
   Serial.println(WiFi.localIP());
   server.begin();
 }
+
+void startHotspot(){
+   WiFi.softAP(ssid, password);
+  IPAddress IP = WiFi.softAPIP();
+  server.begin();
+}
 void gpioPins(){
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
@@ -83,11 +90,12 @@ void gpioPins(){
 
 void setup()
 {
-  EEPROM.begin(EEPROM_SIZE);
   Serial.begin( 9600);
+  wifiManager.autoConnect("AutoConnectAP");
+  server.begin();
+  EEPROM.begin(EEPROM_SIZE);
   load_config();
   gpioPins();
-  startWifi();
 }
 
 void wavePhase(int i){
@@ -331,6 +339,7 @@ void webconfig_function()
               }
             }
             if (header.indexOf("/wave") >= 0) {setPhase();}
+            if (header.indexOf("/resetSettings") >= 0) {wifiManager.resetSettings();;}
             client.println("<!DOCTYPE html><html lang=\"en\">");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" charset=\"utf-8\">");
             client.println("<title>Watch Winder Configuration</title>");
@@ -357,6 +366,7 @@ void webconfig_function()
             client.println("<div class=\"slidecontainer\"><input type=\"range\" min=\"0\" max=\"1000\" value=\"" + (String)interval_pause + "\" class=\"slider\" id=\"intervalSlider\" step=\"1\"></div>");
             //Buttons
             client.println("<form style=\"display: inline\" action=\"null\" method=\"get\" id=\"saveForm\"><button class=\"button\">Save</button></form>");
+            client.println("<p><a href=\"/resetSettings\"><button class=\"button\">resetSettings</button></a></p>");
             if(wave){
             client.println("<p><a href=\"/wave\"><button class=\"button\">wave</button></a></p>");
             } else{
@@ -414,6 +424,57 @@ void webconfig_function()
     client.stop();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #include <ESP8266WiFi.h>
+// #include <DNSServer.h>
+// #include <ESP8266WebServer.h>
+// const byte DNS_PORT = 53;
+// IPAddress apIP(172, 217, 28, 1);
+// DNSServer dnsServer;
+// ESP8266WebServer webServer(80);
+// String responseHTML = ""
+//                       "<!DOCTYPE html><html lang='en'><head>"
+//                       "<meta name='viewport' content='width=device-width'>"
+//                       "<title>CaptivePortal</title></head><body>"
+//                       "<h1>Hello World!</h1><p>This is a captive portal example."
+//                       " All requests will be redirected here.</p></body></html>";
+// void setup() {
+//   WiFi.mode(WIFI_AP);
+//   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+//   WiFi.softAP("DNSServer CaptivePortal example");
+//   dnsServer.start(DNS_PORT, "*", apIP);
+//   webServer.onNotFound([]() {
+//     webServer.send(200, "text/html", responseHTML);
+//   });
+//   webServer.begin();
+// }
+// void loop() {
+//   dnsServer.processNextRequest();
+//   webServer.handleClient();
+// }
+
+
+
+ // https://github.com/tzapu/WiFiManager
+
+
 
 
 
