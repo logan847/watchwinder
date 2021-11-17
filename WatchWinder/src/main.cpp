@@ -1,10 +1,8 @@
 #include <Arduino.h>
-#include <ESPWiFi.h>
+#include <WiFi.h>
 #include <EEPROM.h>
-#include <WiFiManager.h>
 #define EEPROM_SIZE 230
 
-WiFiManager wifiManager;
 const int M1 = 14; //Stepper Driver Pin 1
 const int M2 = 5; //Stepper Driver Pin 2
 const int M3 = 4; //Stepper Driver Pin 3
@@ -91,8 +89,8 @@ void gpioPins(){
 void setup()
 {
   Serial.begin( 9600);
-  wifiManager.autoConnect("AutoConnectAP");
   server.begin();
+  startWifi();
   EEPROM.begin(EEPROM_SIZE);
   load_config();
   gpioPins();
@@ -339,7 +337,6 @@ void webconfig_function()
               }
             }
             if (header.indexOf("/wave") >= 0) {setPhase();}
-            if (header.indexOf("/resetSettings") >= 0) {wifiManager.resetSettings();;}
             client.println("<!DOCTYPE html><html lang=\"en\">");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" charset=\"utf-8\">");
             client.println("<title>Watch Winder Configuration</title>");
