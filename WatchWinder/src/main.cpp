@@ -9,8 +9,8 @@ const int M3 = 4; //Stepper Driver Pin 3
 const int M4 = 0; //Stepper Driver Pin 4
 const int steps_per_revolution = 510;
 const long timeout_seconds = 3000;
-const char *ssid = "";
-const char *password = "";
+const char *ssid = "Mom, use this one";
+const char *password = "allcapstwowords";
 
 struct configObject {
   int  stepperSpeed;
@@ -89,8 +89,8 @@ void gpioPins(){
 void setup()
 {
   Serial.begin( 9600);
-  server.begin();
   startWifi();
+  server.begin();
   EEPROM.begin(EEPROM_SIZE);
   load_config();
   gpioPins();
