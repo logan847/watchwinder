@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
+#include <ESPWiFi.h>
 #include <EEPROM.h>
 #include <WiFiManager.h>
 #define EEPROM_SIZE 230
