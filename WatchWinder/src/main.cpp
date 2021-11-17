@@ -3,10 +3,10 @@
 #include <EEPROM.h>
 #define EEPROM_SIZE 230
 
-const int M1 = 14; //Stepper Driver Pin 1
-const int M2 = 5; //Stepper Driver Pin 2
-const int M3 = 4; //Stepper Driver Pin 3
-const int M4 = 0; //Stepper Driver Pin 4
+const int M1 = 13; //Stepper Driver Pin 1
+const int M2 = 12; //Stepper Driver Pin 2
+const int M3 = 14; //Stepper Driver Pin 3
+const int M4 = 27; //Stepper Driver Pin 4
 const int steps_per_revolution = 510;
 const long timeout_seconds = 3000;
 const char *ssid = "Mom, use this one";
