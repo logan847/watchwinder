@@ -11,8 +11,8 @@ const int M3 = 4; //Stepper Driver Pin 3
 const int M4 = 0; //Stepper Driver Pin 4
 const int steps_per_revolution = 510;
 const long timeout_seconds = 3000;
-const char *ssid = "TRACE";
-const char *password = "So31TRACE8bz";
+const char *ssid = "";
+const char *password = "";
 
 struct configObject {
   int  stepperSpeed;
